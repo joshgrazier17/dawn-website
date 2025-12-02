@@ -9,9 +9,10 @@ import { useWindowStore } from '@/stores/windowStore';
 
 interface DesktopProps {
   children: ReactNode;
+  onLogout?: () => void;
 }
 
-export default function Desktop({ children }: DesktopProps) {
+export default function Desktop({ children, onLogout }: DesktopProps) {
   const usdcBalance = usePortfolioStore((state) => state.balances.USDC?.amount ?? 0);
   const walletWindow = useWindowStore((state) => state.windows.wallet);
   const openWindow = useWindowStore((state) => state.openWindow);
@@ -68,19 +69,9 @@ export default function Desktop({ children }: DesktopProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1, duration: 0.5 }}
       >
-        {/* Logo */}
-        <div className="flex items-center">
-          <Image
-            src="/dawn-logo.svg"
-            alt="Dawn"
-            width={100}
-            height={28}
-          />
-        </div>
-
-        {/* Center - USDC Balance Pill - GPU accelerated */}
+        {/* Left - USDC Balance Pill */}
         <motion.div
-          className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 pl-3 pr-1.5 py-1.5 rounded-full"
+          className="flex items-center gap-2 pl-3 pr-1.5 py-1.5 rounded-full"
           style={{
             backgroundColor: 'rgba(255, 255, 255, 0.9)',
             backdropFilter: 'blur(12px)',
@@ -115,8 +106,18 @@ export default function Desktop({ children }: DesktopProps) {
           </motion.button>
         </motion.div>
 
+        {/* Center - Logo */}
+        <div className="absolute left-1/2 -translate-x-1/2 flex items-center">
+          <Image
+            src="/dawn-logo.svg"
+            alt="Dawn"
+            width={100}
+            height={28}
+          />
+        </div>
+
         {/* Right side links */}
-        <nav className="flex items-center">
+        <nav className="flex items-center gap-2">
           <motion.a
             href="https://dawn.xyz"
             target="_blank"
@@ -130,6 +131,24 @@ export default function Desktop({ children }: DesktopProps) {
           >
             Download App
           </motion.a>
+          {onLogout && (
+            <motion.button
+              onClick={onLogout}
+              className="px-4 py-2 text-sm font-medium text-gray-600 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white hover:text-gray-900 transition-colors"
+              style={{
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)',
+              }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span className="flex items-center gap-1.5">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Logout
+              </span>
+            </motion.button>
+          )}
         </nav>
       </motion.header>
 

@@ -1,10 +1,12 @@
 'use client';
 
-import { AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import Desktop from '@/components/desktop/Desktop';
 import Window from '@/components/desktop/Window';
 import WalletOverview from '@/components/widgets/WalletOverview';
 import SendCrypto from '@/components/widgets/SendCrypto';
+import EntryPage from '@/components/entry/EntryPage';
 import { useWindowStore } from '@/stores/windowStore';
 
 // Placeholder widgets for future implementation
@@ -133,47 +135,75 @@ function NFTsWidget() {
 }
 
 export default function Home() {
+  const [hasEntered, setHasEntered] = useState(false);
   const windows = useWindowStore((state) => state.windows);
 
+  const handleEnter = () => {
+    setHasEntered(true);
+  };
+
+  const handleLogout = () => {
+    setHasEntered(false);
+  };
+
   return (
-    <Desktop>
-      <AnimatePresence mode="popLayout">
-        {windows.wallet.isOpen && !windows.wallet.isMinimized && (
-          <Window key="window-wallet" id="wallet">
-            <WalletOverview />
-          </Window>
-        )}
-
-        {windows.send.isOpen && !windows.send.isMinimized && (
-          <Window key="window-send" id="send">
-            <SendCrypto />
-          </Window>
-        )}
-
-        {windows.receive.isOpen && !windows.receive.isMinimized && (
-          <Window key="window-receive" id="receive">
-            <ReceiveWidget />
-          </Window>
-        )}
-
-        {windows.swap.isOpen && !windows.swap.isMinimized && (
-          <Window key="window-swap" id="swap">
-            <SwapWidget />
-          </Window>
-        )}
-
-        {windows.transactions.isOpen && !windows.transactions.isMinimized && (
-          <Window key="window-transactions" id="transactions">
-            <TransactionsWidget />
-          </Window>
-        )}
-
-        {windows.nfts.isOpen && !windows.nfts.isMinimized && (
-          <Window key="window-nfts" id="nfts">
-            <NFTsWidget />
-          </Window>
+    <>
+      {/* Entry Page */}
+      <AnimatePresence>
+        {!hasEntered && (
+          <EntryPage onEnter={handleEnter} />
         )}
       </AnimatePresence>
-    </Desktop>
+
+      {/* Dawn OS Desktop - renders behind entry page, becomes visible after transition */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ 
+          opacity: hasEntered ? 1 : 0,
+          scale: hasEntered ? 1 : 0.95,
+        }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <Desktop onLogout={handleLogout}>
+          <AnimatePresence mode="popLayout">
+            {windows.wallet.isOpen && !windows.wallet.isMinimized && (
+              <Window key="window-wallet" id="wallet">
+                <WalletOverview />
+              </Window>
+            )}
+
+            {windows.send.isOpen && !windows.send.isMinimized && (
+              <Window key="window-send" id="send">
+                <SendCrypto />
+              </Window>
+            )}
+
+            {windows.receive.isOpen && !windows.receive.isMinimized && (
+              <Window key="window-receive" id="receive">
+                <ReceiveWidget />
+              </Window>
+            )}
+
+            {windows.swap.isOpen && !windows.swap.isMinimized && (
+              <Window key="window-swap" id="swap">
+                <SwapWidget />
+              </Window>
+            )}
+
+            {windows.transactions.isOpen && !windows.transactions.isMinimized && (
+              <Window key="window-transactions" id="transactions">
+                <TransactionsWidget />
+              </Window>
+            )}
+
+            {windows.nfts.isOpen && !windows.nfts.isMinimized && (
+              <Window key="window-nfts" id="nfts">
+                <NFTsWidget />
+              </Window>
+            )}
+          </AnimatePresence>
+        </Desktop>
+      </motion.div>
+    </>
   );
 }
