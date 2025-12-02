@@ -178,7 +178,7 @@ export default function Window({ id, title, children }: WindowProps) {
       scaleY: 1,
       transformOrigin: 'bottom center',
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 400,
         damping: 30,
         mass: 0.8,
@@ -193,9 +193,9 @@ export default function Window({ id, title, children }: WindowProps) {
       scaleY: 0.02,
       transformOrigin: 'bottom center',
       transition: {
-        type: 'tween',
+        type: 'tween' as const,
         duration: 0.45,
-        ease: [0.32, 0, 0.67, 0],
+        ease: [0.32, 0, 0.67, 0] as const,
       },
     },
     initial: {
@@ -210,7 +210,7 @@ export default function Window({ id, title, children }: WindowProps) {
   };
 
   const openTransition = {
-    type: 'spring',
+    type: 'spring' as const,
     stiffness: 400,
     damping: 30,
     mass: 0.8,
