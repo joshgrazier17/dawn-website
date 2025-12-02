@@ -1,26 +1,173 @@
 @import "tailwindcss";
 
+/* Dawn Design System */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --dawn-bg: #F5F5F5;
+  --dawn-card: #FFFFFF;
+  --dawn-text: #1A1A1A;
+  --dawn-text-secondary: #6B7280;
+  --dawn-orange-start: #F97316;
+  --dawn-orange-end: #FB923C;
+  --dawn-green: #22C55E;
+  --dawn-green-bg: rgba(34, 197, 94, 0.1);
+  --dawn-wallet-green-start: #4ADE80;
+  --dawn-wallet-green-end: #166534;
+  --dawn-border: rgba(0, 0, 0, 0.06);
+  --dawn-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --dawn-shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
+  --dawn-radius: 24px;
+  --dawn-radius-sm: 16px;
+  --dawn-radius-xs: 12px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-dawn-bg: var(--dawn-bg);
+  --color-dawn-card: var(--dawn-card);
+  --color-dawn-text: var(--dawn-text);
+  --color-dawn-text-secondary: var(--dawn-text-secondary);
+  --color-dawn-orange: var(--dawn-orange-start);
+  --color-dawn-green: var(--dawn-green);
+  --color-dawn-border: var(--dawn-border);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Suisse Int'l - Book and Medium only */
+@font-face {
+  font-family: 'Suisse Intl';
+  src: url("/fonts/Suisse Int'l Book.otf") format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Suisse Intl';
+  src: url("/fonts/Suisse Int'l Book Italic.otf") format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Suisse Intl';
+  src: url("/fonts/Suisse Int'l Medium.otf") format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Suisse Intl';
+  src: url("/fonts/Suisse Int'l Medium Italic.otf") format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Exposure';
+  src: url('/fonts/Exposure-[-40]Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--dawn-bg);
+  color: var(--dawn-text);
+  font-family: 'Suisse Intl', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* GPU acceleration for blur performance */
+.gpu-accelerate {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize backdrop-filter performance */
+[style*="backdrop-filter"],
+[style*="-webkit-backdrop-filter"] {
+  isolation: isolate;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Utility classes */
+.dawn-card {
+  background: var(--dawn-card);
+  border-radius: var(--dawn-radius);
+  box-shadow: var(--dawn-shadow);
+}
+
+.dawn-gradient-orange {
+  background: linear-gradient(135deg, var(--dawn-orange-start) 0%, var(--dawn-orange-end) 100%);
+}
+
+.dawn-gradient-green {
+  background: linear-gradient(180deg, var(--dawn-wallet-green-start) 0%, var(--dawn-wallet-green-end) 100%);
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(249, 115, 22, 0.2);
+  color: var(--dawn-text);
+}
+
+/* Pulse scale animation for window attention */
+@keyframes pulse-scale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.015);
+  }
+}
+
+.animate-pulse-scale {
+  animation: pulse-scale 0.4s ease-out;
+}
+
+/* Shine/glimmer effect */
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shine {
+  animation: shine 0.6s ease-in-out forwards;
 }
