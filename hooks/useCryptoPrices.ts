@@ -7,6 +7,7 @@ export interface CryptoPrices {
   SOL: number;
   USDC: number;
   USDT: number;
+  [key: string]: number;
 }
 
 const DEFAULT_PRICES: CryptoPrices = {
